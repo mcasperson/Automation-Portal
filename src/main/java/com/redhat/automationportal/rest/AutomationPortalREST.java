@@ -1,7 +1,5 @@
 package com.redhat.automationportal.rest;
 
-import java.util.Calendar;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -38,7 +36,6 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-
 			logger.info("<- AutomationPortalREST.BugzillaReportGeneratorGetJson()");
 		}
 
