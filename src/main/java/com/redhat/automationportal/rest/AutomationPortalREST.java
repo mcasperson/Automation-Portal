@@ -28,11 +28,8 @@ public class AutomationPortalREST
 			final boolean result = script.run();
 
 			final String message = script.getMessage();
-			
-			if (result)			
-				return Response.status(200).entity(message).build();
-			else
-				return Response.status(500).entity(message).build();
+		
+			return Response.status(result ? 200 : 500).entity(message).build();
 		}
 		finally
 		{

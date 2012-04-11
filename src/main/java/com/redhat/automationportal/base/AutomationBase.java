@@ -16,6 +16,7 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.redhat.ecs.commonutils.CollectionUtilities;
@@ -94,7 +95,7 @@ public abstract class AutomationBase
 	 *            The string to be fixed
 	 * @return The fixed string
 	 */
-	protected String cleanStringForBash(final String input)
+	protected String cleanStringForBash(@NotNull final String input)
 	{
 		String retValue = "";
 		int lastIndex = 0;
@@ -109,7 +110,7 @@ public abstract class AutomationBase
 		return "'" + retValue + "'";
 	}
 
-	protected boolean createTempDirectory(final Integer randomInt)
+	protected boolean createTempDirectory(@NotNull final Integer randomInt)
 	{
 		// create the temp folder
 		final File tmpDir = new File(getTmpDirectory(randomInt));
@@ -132,7 +133,7 @@ public abstract class AutomationBase
 	 *            The directory to be deleted
 	 * @return true if the operation was successful, false otherwise
 	 */
-	private boolean deleteDirectory(final File path)
+	private boolean deleteDirectory(@NotNull final File path)
 	{
 		if (path.exists())
 		{
@@ -158,7 +159,7 @@ public abstract class AutomationBase
 	 * 
 	 * @return true if the operation was successful, false otherwise
 	 */
-	protected boolean cleanup(final Integer randomInt)
+	protected boolean cleanup(@NotNull final Integer randomInt)
 	{
 		final boolean retValue = deleteDirectory(new File(getTmpDirectory(randomInt)));
 
@@ -182,7 +183,7 @@ public abstract class AutomationBase
 		return password;
 	}
 
-	public String getTmpDirectory(final Integer randomInt)
+	public String getTmpDirectory(@NotNull final Integer randomInt)
 	{
 		return "/tmp/" + randomInt;
 	}
@@ -200,7 +201,7 @@ public abstract class AutomationBase
 			this.message = "ERROR! The command was not successfully executed.";
 	}
 
-	private boolean checkStringQuotesAreEscaped(final String input)
+	private boolean checkStringQuotesAreEscaped(@NotNull final String input)
 	{
 		/*
 		 * As a safety precaution, we won't run any script that includes
@@ -237,31 +238,31 @@ public abstract class AutomationBase
 		return true;
 	}
 
-	protected void runScript(final String script, final Integer randomInt)
+	protected void runScript(@NotNull final String script, @NotNull final Integer randomInt)
 	{
 		runScript(script, randomInt, true, true, true, new LinkedHashMap<String, String>(), new String[]
 		{});
 	}
 
-	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired)
+	protected void runScript(@NotNull final String script, @NotNull final Integer randomInt, final boolean rootRequired)
 	{
 		runScript(script, randomInt, rootRequired, true, true, new LinkedHashMap<String, String>(), new String[]
 		{});
 	}
 
-	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions)
+	protected void runScript(@NotNull final String script, @NotNull final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions)
 	{
 		runScript(script, randomInt, rootRequired, modifyTempDirPermissions, true, new LinkedHashMap<String, String>(), new String[]
 		{});
 	}
 
-	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser)
+	protected void runScript(@NotNull final String script, @NotNull final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser)
 	{
 		runScript(script, randomInt, rootRequired, modifyTempDirPermissions, runAsUser, new LinkedHashMap<String, String>(), new String[]
 		{});
 	}
 
-	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser, final LinkedHashMap<String, String> waitResponses)
+	protected void runScript(@NotNull final String script, @NotNull final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser, @NotNull final LinkedHashMap<String, String> waitResponses)
 	{
 		runScript(script, randomInt, rootRequired, modifyTempDirPermissions, runAsUser, waitResponses, new String[]
 		{});
@@ -289,7 +290,7 @@ public abstract class AutomationBase
 	 * @param environment
 	 *            Environment variables in the form VARIABLE=setting
 	 */
-	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser, final LinkedHashMap<String, String> waitResponses, final String[] environment)
+	protected void runScript(@NotNull final String script, @NotNull final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser, @Nullable final LinkedHashMap<String, String> waitResponses, @NotNull final String[] environment)
 	{
 		try
 		{
@@ -467,22 +468,22 @@ public abstract class AutomationBase
 		}
 	}
 
-	public void setMessage(String message)
+	public void setMessage(@Nullable final String message)
 	{
 		this.message = message;
 	}
 
-	public void setOutput(String output)
+	public void setOutput(@Nullable final String output)
 	{
 		this.output = output;
 	}
 
-	public void setPassword(String password)
+	public void setPassword(@Nullable final String password)
 	{
 		this.password = password;
 	}
 
-	public void setUsername(String username)
+	public void setUsername(@Nullable final String username)
 	{
 		this.username = username;
 	}
@@ -512,7 +513,7 @@ public abstract class AutomationBase
 		return true;
 	}
 
-	private boolean validateUser(final String username, final String password)
+	private boolean validateUser(@NotNull final String username, @NotNull final String password)
 	{
 		LoginContext lc = null;
 		try
