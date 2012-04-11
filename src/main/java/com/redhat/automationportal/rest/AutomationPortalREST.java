@@ -7,7 +7,10 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
+import com.redhat.automationportal.base.AutomationBase;
+import com.redhat.automationportal.base.Constants;
 import com.redhat.automationportal.scripts.BugzillaReportGenerator;
+import com.redhat.ecs.commonutils.PropertyUtils;
 
 @Path("/")
 public class AutomationPortalREST
@@ -21,6 +24,8 @@ public class AutomationPortalREST
 		try
 		{
 			logger.info("-> AutomationPortalREST.BugzillaReportGeneratorGetJson()");
+			
+			final String test = PropertyUtils.getProperty(Constants.ERROR_FPROPERTY_FILENAME, "AMPT0001");
 			
 			final BugzillaReportGenerator script = new BugzillaReportGenerator();
 			script.setBugzillaPassword(bugzillaPassword);

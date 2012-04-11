@@ -1,11 +1,12 @@
 package com.redhat.automationportal.scripts;
 
 import com.redhat.automationportal.base.AutomationBase;
+import com.redhat.automationportal.base.Constants;
+import com.redhat.ecs.commonutils.PropertyUtils;
 
 public class BugzillaReportGenerator extends AutomationBase
 {
 	private static String BUILD = "20111125-0710";
-	private static final String PASSWORD_ENV_VARIABLE_NAME = "PASSWORD";
 	private static final String TEMPLATE_DIR = "/opt/automation-interface/Report_Generator";
 	
 	private String bugzillaUsername;
@@ -39,14 +40,26 @@ public class BugzillaReportGenerator extends AutomationBase
 
 	public boolean run()
 	{
-
 		if (this.bugzillaUsername != null && this.bugzillaPassword != null && this.bugzillaUsername.trim().length() != 0 && this.bugzillaPassword.trim().length() != 0)
 		{
 			final Integer randomInt = this.generateRandomInt();
+			final String randomString = this.generateRandomString(10);				
+			
+			if (randomInt == null)
+			{
+				this.message = "BugzillaReportGenerator.run() " + PropertyUtils.getProperty(Constants.ERROR_FPROPERTY_FILENAME, "AMPT0001");
+				return false;
+			}
+			
+			if (randomString == null)
+			{
+				this.message = "BugzillaReportGenerator.run() " + PropertyUtils.getProperty(Constants.ERROR_FPROPERTY_FILENAME, "AMPT0002");
+				return false;
+			}
 
 			this.message = "";
 
-			final String[] environment = new String[] { PASSWORD_ENV_VARIABLE_NAME + "=" + this.bugzillaPassword };
+			final String[] environment = new String[] { randomString + "=" + this.bugzillaPassword };
 
 			final String script =
 			// copy the template files
@@ -56,7 +69,7 @@ public class BugzillaReportGenerator extends AutomationBase
 			"&& cd \\\"" + this.getTmpDirectory(randomInt) + "\\\" " +
 
 			// run the python script
-			"&& perl report_generator.pl -login=" + bugzillaUsername + " -password=${" + PASSWORD_ENV_VARIABLE_NAME + "}";
+			"&& perl report_generator.pl -login=" + bugzillaUsername + " -password=${" + randomString + "}";
 
 			runScript(script, randomInt, true, true, true, null, environment);
 
