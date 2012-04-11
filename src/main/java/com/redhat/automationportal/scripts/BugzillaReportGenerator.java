@@ -37,15 +37,16 @@ public class BugzillaReportGenerator extends AutomationBase
 		return BUILD;
 	}
 
-	public void run()
+	public boolean run()
 	{
-		if (this.bugzillaUsername.trim().length() != 0 && this.getPassword().trim().length() != 0)
+
+		if (this.bugzillaUsername != null && this.bugzillaPassword != null && this.bugzillaUsername.trim().length() != 0 && this.bugzillaPassword.trim().length() != 0)
 		{
 			final Integer randomInt = this.generateRandomInt();
 
 			this.message = "";
 
-			final String[] environment = new String[] { PASSWORD_ENV_VARIABLE_NAME + "=" + this.getBugzillaPassword() };
+			final String[] environment = new String[] { PASSWORD_ENV_VARIABLE_NAME + "=" + this.bugzillaPassword };
 
 			final String script =
 			// copy the template files
@@ -61,10 +62,13 @@ public class BugzillaReportGenerator extends AutomationBase
 
 			// cleanup the temp dir
 			cleanup(randomInt);
+			
+			return true;
 		}
 		else
 		{
 			this.message = "Please enter a username and password";
+			return false;
 		}
 
 	}
