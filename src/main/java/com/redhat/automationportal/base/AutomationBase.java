@@ -16,6 +16,8 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.redhat.ecs.commonutils.CollectionUtilities;
 import com.redhat.ecs.commonutils.ExceptionUtilities;
 import com.redhat.ecs.commonutils.ExecUtilities;
@@ -30,15 +32,41 @@ public abstract class AutomationBase
 	protected String username;
 	protected boolean success;
 
+	private char[] randomStringCharacters = new char[]
+	{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
 	public AutomationBase()
 	{
 		generateRandomInt();
 	}
 
+	@Nullable
+	protected String generateRandomString(final int length)
+	{
+		final StringBuilder text = new StringBuilder();
+
+		try
+		{
+			final SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+
+			for (int i = 0; i < length; i++)
+			{
+				text.append(randomStringCharacters[random.nextInt(randomStringCharacters.length)]);
+			}
+		}
+		catch (final Exception ex)
+		{
+			return null;
+		}
+
+		return text.toString();
+	}
+
+	@Nullable
 	protected Integer generateRandomInt()
 	{
-		Integer randomInt = 123456789;
-		
+		Integer randomInt = null;
+
 		try
 		{
 			final SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
@@ -49,17 +77,18 @@ public abstract class AutomationBase
 			if (randomInt < 0)
 				randomInt *= -1;
 		}
-		catch (Exception ex)
+		catch (final Exception ex)
 		{
-			
+			return null;
 		}
-		
+
 		return randomInt;
 	}
 
 	/**
-	 * Escape characters that cause problems for Bash scripts by enclosing the string in single quotes, 
-	 * and enclosing single quotes in double quotes. See http://www.gnu.org/software/bash/manual/bashref.html#Single-Quotes
+	 * Escape characters that cause problems for Bash scripts by enclosing the
+	 * string in single quotes, and enclosing single quotes in double quotes.
+	 * See http://www.gnu.org/software/bash/manual/bashref.html#Single-Quotes
 	 * 
 	 * @param input
 	 *            The string to be fixed
@@ -214,27 +243,27 @@ public abstract class AutomationBase
 		{});
 	}
 
-	protected void runScript(final String script, final Integer randomInt,  final boolean rootRequired)
+	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired)
 	{
-		runScript(script, randomInt,  rootRequired, true, true, new LinkedHashMap<String, String>(), new String[]
+		runScript(script, randomInt, rootRequired, true, true, new LinkedHashMap<String, String>(), new String[]
 		{});
 	}
 
-	protected void runScript(final String script, final Integer randomInt,  final boolean rootRequired, final boolean modifyTempDirPermissions)
+	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions)
 	{
-		runScript(script, randomInt,  rootRequired, modifyTempDirPermissions, true, new LinkedHashMap<String, String>(), new String[]
+		runScript(script, randomInt, rootRequired, modifyTempDirPermissions, true, new LinkedHashMap<String, String>(), new String[]
 		{});
 	}
 
-	protected void runScript(final String script, final Integer randomInt,  final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser)
+	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser)
 	{
-		runScript(script, randomInt,  rootRequired, modifyTempDirPermissions, runAsUser, new LinkedHashMap<String, String>(), new String[]
+		runScript(script, randomInt, rootRequired, modifyTempDirPermissions, runAsUser, new LinkedHashMap<String, String>(), new String[]
 		{});
 	}
 
-	protected void runScript(final String script, final Integer randomInt,  final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser, final LinkedHashMap<String, String> waitResponses)
+	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser, final LinkedHashMap<String, String> waitResponses)
 	{
-		runScript(script, randomInt,  rootRequired, modifyTempDirPermissions, runAsUser, waitResponses, new String[]
+		runScript(script, randomInt, rootRequired, modifyTempDirPermissions, runAsUser, waitResponses, new String[]
 		{});
 	}
 
@@ -249,7 +278,8 @@ public abstract class AutomationBase
 	 *            true. Set to false to debug under a non-root account.
 	 * @param modifyTempDirPermissions
 	 *            true if the permissions on the temporary directory should be
-	 *            modified to be exclusively owned by username. Set to false to debug under a non-root account.
+	 *            modified to be exclusively owned by username. Set to false to
+	 *            debug under a non-root account.
 	 * @param runAsUser
 	 *            true if all script operations should be run under the username
 	 *            account. Set to false to debug under a non-root account.
@@ -262,10 +292,10 @@ public abstract class AutomationBase
 	protected void runScript(final String script, final Integer randomInt, final boolean rootRequired, final boolean modifyTempDirPermissions, final boolean runAsUser, final LinkedHashMap<String, String> waitResponses, final String[] environment)
 	{
 		try
-		{			
+		{
 			if (!checkStringQuotesAreEscaped(script))
 				return;
-			
+
 			if (waitResponses != null)
 			{
 				for (final String match : waitResponses.keySet())
