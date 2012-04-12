@@ -32,9 +32,13 @@ public class AutomationPortalREST
 			script.setBugzillaUsername(bugzillaUsername);
 			final boolean result = script.run();
 
-			final String message = script.getMessage();
+			final String message = script.getMessage();			
+			final String output = script.getOutput();
+			
+			logger.info("AutomationPortalREST.BugzillaReportGeneratorGetJson() message: " + message);
+			logger.info("AutomationPortalREST.BugzillaReportGeneratorGetJson() output: " + output);
 		
-			return Response.status(result ? 200 : 500).entity(message).build();
+			return Response.status(result ? 200 : 500).entity(result ? output : message).build();
 		}
 		finally
 		{
