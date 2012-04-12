@@ -3,6 +3,7 @@ package com.redhat.automationportal.rest;
 import java.io.InputStream;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
@@ -19,7 +20,11 @@ public class AutomationPortalREST
 {
 	@GET
 	@Path("/BugzillaReportGenerator/get/json")
-	public Response BugzillaReportGeneratorGetJson(@QueryParam("bugzillaUsername") final String bugzillaUsername, @QueryParam("bugzillaPassword") final String bugzillaPassword)
+	public Response BugzillaReportGeneratorGetJson(
+			@QueryParam("bugzillaUsername") final String bugzillaUsername, 
+			@QueryParam("bugzillaPassword") final String bugzillaPassword,
+			@HeaderParam("Referer") final String refererHeader,
+			@HeaderParam("Origin") final String originHeader)
 	{
 		final Logger logger = Logger.getLogger("com.redhat.automationportal");
 
@@ -38,7 +43,11 @@ public class AutomationPortalREST
 			logger.info("AutomationPortalREST.BugzillaReportGeneratorGetJson() message: " + message);
 			logger.info("AutomationPortalREST.BugzillaReportGeneratorGetJson() output: " + output);
 		
-			return Response.status(result ? 200 : 500).entity(result ? output : message).build();
+			return Response.status(result ? 200 : 500)
+					/* CORS header allowing cross-site requests */
+					.header("Access-Control-Allow-Origin", originHeader)
+					.entity(result ? output : message)
+					.build();
 		}
 		finally
 		{
