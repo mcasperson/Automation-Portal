@@ -47,13 +47,13 @@ public class BugzillaReportGenerator extends AutomationBase
 			
 			if (randomInt == null)
 			{
-				this.message = "BugzillaReportGenerator.run() " + PropertyUtils.getProperty(Constants.ERROR_FPROPERTY_FILENAME, "AMPT0001");
+				this.message = "BugzillaReportGenerator.run() " + PropertyUtils.getProperty(Constants.ERROR_FPROPERTY_FILENAME, "AMPT0001", this.getClass());
 				return false;
 			}
 			
 			if (randomString == null)
 			{
-				this.message = "BugzillaReportGenerator.run() " + PropertyUtils.getProperty(Constants.ERROR_FPROPERTY_FILENAME, "AMPT0002");
+				this.message = "BugzillaReportGenerator.run() " + PropertyUtils.getProperty(Constants.ERROR_FPROPERTY_FILENAME, "AMPT0002", this.getClass());
 				return false;
 			}
 

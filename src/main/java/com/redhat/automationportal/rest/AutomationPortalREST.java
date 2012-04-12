@@ -1,5 +1,7 @@
 package com.redhat.automationportal.rest;
 
+import java.io.InputStream;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -24,8 +26,6 @@ public class AutomationPortalREST
 		try
 		{
 			logger.info("-> AutomationPortalREST.BugzillaReportGeneratorGetJson()");
-			
-			final String test = PropertyUtils.getProperty(Constants.ERROR_FPROPERTY_FILENAME, "AMPT0001");
 			
 			final BugzillaReportGenerator script = new BugzillaReportGenerator();
 			script.setBugzillaPassword(bugzillaPassword);
