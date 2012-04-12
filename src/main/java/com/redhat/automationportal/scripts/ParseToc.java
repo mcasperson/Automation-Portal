@@ -13,7 +13,7 @@ public class ParseToc extends AutomationBase
 		return BUILD;
 	}
 	
-	public void run(final boolean download)
+	public boolean run()
 	{
 		final Integer randomInt = this.generateRandomInt();
 		
@@ -33,6 +33,7 @@ public class ParseToc extends AutomationBase
 
 		// cleanup the temp dir
 		cleanup(randomInt);
-
+		
+		return true;
 	}
 }

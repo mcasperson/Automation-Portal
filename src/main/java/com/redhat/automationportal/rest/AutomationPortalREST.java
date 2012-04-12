@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import com.redhat.automationportal.scripts.BugzillaReportGenerator;
+import com.redhat.automationportal.scripts.ParseToc;
 
 @Path("/")
 public class AutomationPortalREST
@@ -51,6 +52,42 @@ public class AutomationPortalREST
 		finally
 		{
 			logger.info("<- AutomationPortalREST.BugzillaReportGeneratorGetJson()");
+		}
+
+	}
+	
+	@GET
+	@Consumes("text/plain")
+	@Produces("application/json")
+	@Path("/ParseTOC/get/json")
+	public Response ParseTOCGetJson(
+			@HeaderParam("Referer") final String refererHeader,
+			@HeaderParam("Origin") final String originHeader)
+	{
+		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+
+		try
+		{
+			logger.info("-> AutomationPortalREST.ParseTOCGetJson()");
+			
+			final ParseToc script = new ParseToc();
+			final boolean result = script.run();
+
+			final String message = script.getMessage();			
+			final String output = script.getOutput();
+			
+			logger.info("AutomationPortalREST.ParseTOCGetJson() message: " + message);
+			logger.info("AutomationPortalREST.ParseTOCGetJson() output: " + output);
+		
+			return Response.status(result ? 200 : 500)
+					/* CORS header allowing cross-site requests */
+					.header("Access-Control-Allow-Origin", originHeader)
+					.entity(new AutomationPortalResponseData(message, output))
+					.build();
+		}
+		finally
+		{
+			logger.info("<- AutomationPortalREST.ParseTOCGetJson()");
 		}
 
 	}
