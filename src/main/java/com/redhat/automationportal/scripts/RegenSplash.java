@@ -36,6 +36,11 @@ public class RegenSplash extends AutomationBase
 		this.sites.add(new StringPair(DOCS_STAGE_DUMP_XML, "Docs Stage"));
 	}
 
+	public List<StringPair> getSites()
+	{
+		return sites;
+	}
+
 	public String getBuild()
 	{
 		return BUILD;
@@ -62,7 +67,7 @@ public class RegenSplash extends AutomationBase
 		return selectedSite;
 	}
 
-	private List<String> parseToc(final String tocURL)
+	public List<String> getProducts(final String tocURL)
 	{
 		final List<String> products = new ArrayList<String>();
 
