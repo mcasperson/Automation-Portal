@@ -14,6 +14,28 @@ import com.redhat.ecs.commonutils.XMLUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+/**
+ * 	Requires:
+ * 
+ *	/opt/automation-interface/cvs/dummyeditor.sh to avoid editor prompts and errors. 
+ *	The script just needs to change the time stamp and add something to the file.
+ *	
+ *	#!/bin/sh
+ *	echo "Automation Interface TOC Update" > $1
+ *	sleep 1
+ *	touch $1
+ *	exit 0
+ *
+ * 	EDITOR environment variable needs to point to /opt/automation-interface/cvs/dummyeditor.sh
+ *	
+ *	Set "StrictHostKeyChecking no" in /etc/ssh/ssh_config to avoid key issues with cvs in a script
+ *
+ *	empty http://empty.sourceforge.net/">http://empty.sourceforge.net/
+ *	brewkoji http://download.devel.redhat.com/rel-eng/brew/rhel/6/
+ *	publican &gt;= 2.6 http://porkchop.redhat.com/rel-eng/repos/eng-rhel-6/x86_64/
+ *	regensplash.rb https://engineering.redhat.com/trac/ContentServices/wiki/RegenSplash
+ *	publican_build https://svn.devel.redhat.com/repos/ecs/toolkit/publican_build/publican_build
+ */
 public class RegenSplash extends AutomationBase
 {
 	private static String BUILD = "20120105-0812";
