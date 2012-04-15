@@ -146,7 +146,7 @@ public class RegenSplash extends AutomationBase
 		"&& cd \\\"" + getTmpDirectory(randomInt) + "\\\" " +
 
 		/* run the regenplash.rb script */
-		"&& ./" + SCRIPT_NAME + " \\\"" + tocURL + "\\\"" + (this.product != null && this.product.length() == 0 ? " \\\"" + this.product + "\\\" " : " ") +
+		"&& ruby " + SCRIPT_NAME + " \\\"" + tocURL + "\\\"" + (this.product != null && this.product.length() == 0 ? " \\\"" + this.product + "\\\" " : " ") +
 		
 		/* dump the contents of the version_packages.txt and product_packages.txt files */
 		"&& echo -------------------" +
@@ -185,7 +185,8 @@ public class RegenSplash extends AutomationBase
 		 * password. This prevents the strings from showing up in a ps listing.
 		 */
 		final LinkedHashMap<String, String> responses = new LinkedHashMap<String, String>();
-		responses.put("REDHAT.COM", "${" + PASSWORD_ENV_VARIABLE_NAME + "}");
+		//responses.put("REDHAT.COM", "${" + PASSWORD_ENV_VARIABLE_NAME + "}");
+		responses.put("REDHAT.COM", this.getPassword());
 
 		runScript(script, randomInt, true, true, true, responses, environment);
 
