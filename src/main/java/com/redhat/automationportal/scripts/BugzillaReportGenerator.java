@@ -4,6 +4,15 @@ import com.redhat.automationportal.base.AutomationBase;
 import com.redhat.automationportal.base.Constants;
 import com.redhat.ecs.commonutils.PropertyUtils;
 
+/**
+ * Requires: 
+ * href="http://repoforge.org/use/ Repoforge
+ * yum install perl-Getopt-Long
+ * yum install perl-Pod-Usage-CGI
+ * yum install perl-Data-Dumper
+ * yum install perl-SOAP-Lite
+ * yum install perl-Crypt-SSLeay
+ */
 public class BugzillaReportGenerator extends AutomationBase
 {
 	private static String BUILD = "20111125-0710";

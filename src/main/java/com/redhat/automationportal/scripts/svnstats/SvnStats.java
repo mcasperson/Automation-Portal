@@ -15,6 +15,11 @@ import com.redhat.ecs.commonutils.HTTPUtilities;
 import com.redhat.ecs.commonutils.MIMEUtilities;
 import com.redhat.ecs.commonutils.ZipUtilities;
 
+/**
+ * 	Requires:
+ *	pysvn http://fedoraproject.org/wiki/EPEL
+ *	python-lxml
+ */
 public class SvnStats extends AutomationBase
 {
 	public static final String BUILD = "20111031-1013";
