@@ -124,8 +124,8 @@ public class AutomationPortalREST
 			final String message = script.getMessage();			
 			final String output = script.getOutput();
 			
-			logger.info("AutomationPortalREST.ParseTOCGetJson() message: " + message);
-			logger.info("AutomationPortalREST.ParseTOCGetJson() output: " + output);
+			logger.info("AutomationPortalREST.RegenSplashGetJson() message: " + message);
+			logger.info("AutomationPortalREST.RegenSplashGetJson() output: " + output);
 		
 			return Response.status(result ? 200 : 500)
 					/* CORS header allowing cross-site requests */
