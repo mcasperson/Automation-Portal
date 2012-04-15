@@ -185,7 +185,7 @@ public class RegenSplash extends AutomationBase
 		 * password. This prevents the strings from showing up in a ps listing.
 		 */
 		final LinkedHashMap<String, String> responses = new LinkedHashMap<String, String>();
-		responses.put("REDHAT.COM", "$" + PASSWORD_ENV_VARIABLE_NAME);
+		responses.put("REDHAT.COM", "${" + PASSWORD_ENV_VARIABLE_NAME + "}");
 
 		runScript(script, randomInt, true, true, true, responses, environment);
 
