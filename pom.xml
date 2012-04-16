@@ -10,7 +10,7 @@
 	<repositories>
 		<repository>
 			<id>JBoss</id>
-			<url>http://repository.jboss.org/maven2</url>
+			<url>https://repository.jboss.org/nexus/</url>
 		</repository>
 		<repository>
 			<id>Apache</id>
