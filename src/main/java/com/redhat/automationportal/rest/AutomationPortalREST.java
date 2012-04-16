@@ -25,6 +25,8 @@ import com.redhat.ecs.commonutils.CollectionUtilities;
 @Path("/")
 public class AutomationPortalREST
 {
+	public static final String BUILD = "20120417-0709";
+	
 	@GET
 	@Consumes("text/plain")
 	@Produces("application/json")
@@ -36,7 +38,7 @@ public class AutomationPortalREST
 
 		try
 		{
-			logger.info("-> " + uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson()");
+			logger.info("-> " + BUILD + " " + uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson()");
 
 			final BugzillaReportGenerator script = new BugzillaReportGenerator();
 			script.setBugzillaPassword(bugzillaPassword);
@@ -46,8 +48,8 @@ public class AutomationPortalREST
 			final String message = script.getMessage();
 			final String output = script.getOutput();
 
-			logger.info(uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson() message: " + message);
-			logger.info(uuid + "AutomationPortalREST.BugzillaReportGeneratorGetJson() output: " + output);
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson() message: " + message);
+			logger.info(BUILD + " " + uuid + "AutomationPortalREST.BugzillaReportGeneratorGetJson() output: " + output);
 
 			return Response.status(result ? 200 : 500)
 			/* CORS header allowing cross-site requests */
@@ -55,7 +57,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- " + uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson()");
+			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson()");
 		}
 
 	}
@@ -71,7 +73,7 @@ public class AutomationPortalREST
 
 		try
 		{
-			logger.info("-> " + uuid + " AutomationPortalREST.ParseTOCGetJson()");
+			logger.info("-> " + BUILD + " " + uuid + " AutomationPortalREST.ParseTOCGetJson()");
 
 			final ParseToc script = new ParseToc();
 			final boolean result = script.run();
@@ -79,8 +81,8 @@ public class AutomationPortalREST
 			final String message = script.getMessage();
 			final String output = script.getOutput();
 
-			logger.info(uuid + " AutomationPortalREST.ParseTOCGetJson() message: " + message);
-			logger.info(uuid + " AutomationPortalREST.ParseTOCGetJson() output: " + output);
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.ParseTOCGetJson() message: " + message);
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.ParseTOCGetJson() output: " + output);
 
 			return Response.status(result ? 200 : 500)
 			/* CORS header allowing cross-site requests */
@@ -88,7 +90,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- " + uuid + " AutomationPortalREST.ParseTOCGetJson()");
+			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.ParseTOCGetJson()");
 		}
 
 	}
@@ -105,7 +107,7 @@ public class AutomationPortalREST
 
 		try
 		{
-			logger.info("-> " + uuid + " AutomationPortalREST.RegenSplashGetJson()");
+			logger.info("-> " + BUILD + " " + uuid + " AutomationPortalREST.RegenSplashGetJson()");
 
 			final RegenSplash script = new RegenSplash();
 			script.setUsername(username);
@@ -118,8 +120,8 @@ public class AutomationPortalREST
 			final String message = script.getMessage();
 			final String output = script.getOutput();
 
-			logger.info(uuid + " AutomationPortalREST.RegenSplashGetJson() message: " + message);
-			logger.info(uuid + " AutomationPortalREST.RegenSplashGetJson() output: " + output);
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.RegenSplashGetJson() message: " + message);
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.RegenSplashGetJson() output: " + output);
 
 			return Response.status(result ? 200 : 500)
 			/* CORS header allowing cross-site requests */
@@ -127,7 +129,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- " + uuid + " AutomationPortalREST.RegenSplashGetJson()");
+			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.RegenSplashGetJson()");
 		}
 
 	}
@@ -143,7 +145,7 @@ public class AutomationPortalREST
 
 		try
 		{
-			logger.info("-> " + uuid + " AutomationPortalREST.RegenSplashGetJsonSites()");
+			logger.info("-> " + BUILD + " " + uuid + " AutomationPortalREST.RegenSplashGetJsonSites()");
 
 			final RegenSplash script = new RegenSplash();
 			final List<StringPair> sites = script.getSites();
@@ -154,7 +156,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- " + uuid + " AutomationPortalREST.RegenSplashGetJsonSites()");
+			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.RegenSplashGetJsonSites()");
 		}
 
 	}
@@ -170,7 +172,7 @@ public class AutomationPortalREST
 
 		try
 		{
-			logger.info("-> " + uuid + " AutomationPortalREST.RegenSplashGetJsonProducts()");
+			logger.info("-> " + BUILD + " " + uuid + " AutomationPortalREST.RegenSplashGetJsonProducts()");
 
 			final RegenSplash script = new RegenSplash();
 			final List<String> products = script.getProducts(tocUrl);
@@ -181,7 +183,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- " + uuid + " AutomationPortalREST.RegenSplashGetJsonProducts()");
+			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.RegenSplashGetJsonProducts()");
 		}
 
 	}
@@ -197,7 +199,7 @@ public class AutomationPortalREST
 
 		try
 		{
-			logger.info("-> " + uuid + " AutomationPortalREST.SVNStatsGetJson()");
+			logger.info("-> " + BUILD + " " + uuid + " AutomationPortalREST.SVNStatsGetJson()");
 
 			/* extract the list of ConfigXMLData elemets from the URL query parameter */
 			final ObjectMapper mapper = new ObjectMapper();
@@ -221,8 +223,8 @@ public class AutomationPortalREST
 			final String message = script.getMessage();
 			final String output = script.getOutput();
 
-			logger.info(uuid + " AutomationPortalREST.SVNStatsGetJson() message: " + message);
-			logger.info(uuid + " AutomationPortalREST.SVNStatsGetJson() output: " + output);
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.SVNStatsGetJson() message: " + message);
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.SVNStatsGetJson() output: " + output);
 
 			return Response.status(result ? 200 : 500)
 			/* CORS header allowing cross-site requests */
@@ -230,7 +232,7 @@ public class AutomationPortalREST
 		}
 		catch (final Exception ex)
 		{
-			logger.info(uuid + " AutomationPortalREST.SVNStatsGetJson() Exception: " + ex.toString());
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.SVNStatsGetJson() Exception: " + ex.toString());
 			
 			return Response.status(500)
 			/* CORS header allowing cross-site requests */
@@ -238,7 +240,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- " + uuid + " AutomationPortalREST.SVNStatsGetJson()");
+			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.SVNStatsGetJson()");
 		}
 
 	}
