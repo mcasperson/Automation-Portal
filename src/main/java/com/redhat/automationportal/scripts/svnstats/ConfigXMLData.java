@@ -1,6 +1,5 @@
 package com.redhat.automationportal.scripts.svnstats;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class ConfigXMLData
@@ -62,7 +61,7 @@ public class ConfigXMLData
 	
 	public boolean isValid()
 	{
-		if (this.fromDate == null || fromDate.after(Calendar.getInstance().getTime()))
+		if (this.fromDate == null || fromDate.after(new Date()))
 			return false;
 		if (this.entry == null || this.entry.trim().length() == 0)
 			return false;
