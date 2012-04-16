@@ -44,10 +44,18 @@
 	</dependencies>
 	<build>
 		<finalName>automationportal</finalName>
-		<!-- <resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources> -->
+		<plugins>
+         <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-war-plugin</artifactId>
+           <configuration>
+              <archive>
+                 <manifestEntries>
+                    <Dependencies>org.codehaus.jackson.jackson-mapper-asl</Dependencies>
+                 </manifestEntries>  
+              </archive>
+           </configuration>
+         </plugin>   
+       </plugins>
 	</build>
 </project>
