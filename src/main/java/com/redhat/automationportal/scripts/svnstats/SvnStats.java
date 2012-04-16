@@ -49,12 +49,15 @@ public class SvnStats extends AutomationBase
 		
 		if (configDataItems.size() != 0)
 		{
+			final String configXML = cleanStringForBash(getConfigXml(configDataItems));
+			final String configXMLEscaped = configXML.replace("\"", "\\\"");
+			
 			final String script =
 			// copy the template files
 			"cp -R \\\"" + TEMPLATE_DIR + "/\\\"* \\\"" + this.getTmpDirectory(randomInt) + "\\\" " +
 
 			// dump the new config.xml file
-			"&& echo '" + cleanStringForBash(getConfigXml(configDataItems)) + "' > \\\"" + this.getTmpDirectory(randomInt) + "/config.xml\\\" " +
+			"&& echo '" + configXMLEscaped + "' > \\\"" + this.getTmpDirectory(randomInt) + "/config.xml\\\" " +
 
 			// enter the scripts directory
 			"&& cd \\\"" + this.getTmpDirectory(randomInt) + "/scripts\\\" " +
