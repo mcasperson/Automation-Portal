@@ -146,7 +146,7 @@ public class RegenSplash extends AutomationBase
 		"&& cd \\\"" + getTmpDirectory(randomInt) + "\\\" " +
 
 		/* run the regenplash.rb script */
-		"&& ruby " + SCRIPT_NAME + " \\\"" + tocURL + "\\\"" + (this.product != null && this.product.length() == 0 ? " \\\"" + this.product + "\\\" " : " ") +
+		"&& ruby " + SCRIPT_NAME + " \\\"" + tocURL + "\\\"" + (this.product != null && !this.product.isEmpty() ? " \\\"" + this.product + "\\\" " : " ") +
 		
 		/* dump the contents of the version_packages.txt and product_packages.txt files */
 		"&& echo -------------------" +
