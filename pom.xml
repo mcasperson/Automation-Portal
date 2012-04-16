@@ -35,6 +35,12 @@
 			<artifactId>annotations</artifactId>
 			<version>7.0.3</version>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<scope>provided</scope>
+			<version>1.9.6</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>automationportal</finalName>

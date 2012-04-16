@@ -26,34 +26,17 @@ public class SvnStats extends AutomationBase
 	private static final String TEMPLATE_DIR = "/opt/automation-interface/svn_stats";
 	private static final String HTML_SINGLE_BUILD_DIR = "/tmp/en-US/html-single";
 	private final SimpleDateFormat xmlFormatter = new SimpleDateFormat("dd-MM-yyyy");
-	private ConfigXMLData configData = new ConfigXMLData();
-	private List<ConfigXMLData> configDataItems = new ArrayList<ConfigXMLData>();
-
-	public void deleteConfig(final ConfigXMLData configData)
-	{
-		this.configDataItems.remove(configData);
-	}
 
 	public String getBuild()
 	{
 		return BUILD;
 	}
 
-	public ConfigXMLData getConfigData()
-	{
-		return configData;
-	}
-
-	public List<ConfigXMLData> getConfigDataItems()
-	{
-		return configDataItems;
-	}
-
-	private String getConfigXml()
+	private String getConfigXml(final List<ConfigXMLData> configDataItems)
 	{
 		String configXml = "<config>";
 
-		for (final ConfigXMLData data : this.configDataItems)
+		for (final ConfigXMLData data : configDataItems)
 		{
 			configXml += "<entry from_date=\"" + xmlFormatter.format(data.getFromDate()) + "\" " + "path=\"" + data.getPath() + "\">" + data.getEntry() + "</entry>";
 		}
@@ -63,20 +46,20 @@ public class SvnStats extends AutomationBase
 		return configXml;
 	}
 
-	public void run(final boolean download)
+	public boolean run(final List<ConfigXMLData> configDataItems)
 	{
 		final Integer randomInt = this.generateRandomInt();
 		
 		this.message = "";
 		
-		if (this.configDataItems.size() != 0)
+		if (configDataItems.size() != 0)
 		{
 			final String script =
 			// copy the template files
 			"cp -R \\\"" + TEMPLATE_DIR + "/\\\"* \\\"" + this.getTmpDirectory(randomInt) + "\\\" " +
 
 			// dump the new config.xml file
-			"&& echo '" + cleanStringForBash(getConfigXml()) + "' > \\\"" + this.getTmpDirectory(randomInt) + "/config.xml\\\" " +
+			"&& echo '" + cleanStringForBash(getConfigXml(configDataItems)) + "' > \\\"" + this.getTmpDirectory(randomInt) + "/config.xml\\\" " +
 
 			// enter the scripts directory
 			"&& cd \\\"" + this.getTmpDirectory(randomInt) + "/scripts\\\" " +
@@ -88,76 +71,31 @@ public class SvnStats extends AutomationBase
 
 			if (this.success)
 			{
-				if (download)
-					buildZip(randomInt);
+				final File htmlSingle = new File(this.getTmpDirectory(randomInt) + HTML_SINGLE_BUILD_DIR + "/index.html");
+				if (htmlSingle.exists())
+				{
+					final String indexString = FileUtilities.readFileContents(htmlSingle);
+					final String inlinedIndexString = HTMLUtilities.inlineHtmlPage(indexString, this.getTmpDirectory(randomInt) + HTML_SINGLE_BUILD_DIR);
+					this.output = inlinedIndexString;
+				}
 				else
-					displayHtml(randomInt);
+				{
+					this.output = "=== OUTPUT LOG ===\n" + this.output;
+					this.success = false;
+				}
 			}
 
 			// cleanup the temp dir
 			cleanup(randomInt);
+			
+			return success;
 		}
 		else
 		{
 			this.message = "Please add some config data.";
+			return false;
 		}
 	}
-
-	private void displayHtml(final Integer randomInt)
-	{
-		final File htmlSingle = new File(this.getTmpDirectory(randomInt) + HTML_SINGLE_BUILD_DIR + "/index.html");
-		if (htmlSingle.exists())
-		{
-			final String indexString = FileUtilities.readFileContents(htmlSingle);
-			final String inlinedIndexString = HTMLUtilities.inlineHtmlPage(indexString, this.getTmpDirectory(randomInt) + HTML_SINGLE_BUILD_DIR);
-			HTTPUtilities.writeOutToBrowser(inlinedIndexString.getBytes(), MIMEUtilities.HTML_MIME_TYPE);
-		}
-		else
-		{
-			this.output = "=== OUTPUT LOG ===\n" + this.output;
-			HTTPUtilities.writeOutToBrowser(this.output.getBytes(), MIMEUtilities.TEXT_MIME_TYPE);
-		}
-	}
-
-	private void buildZip(final Integer randomInt)
-	{
-		final String publicanBuildOutput = this.getTmpDirectory(randomInt);// +
-																	// HTML_SINGLE_BUILD_DIR;
-		final HashMap<String, byte[]> fileMap = new HashMap<String, byte[]>();
-
-		// add a copy of the output to the zip file
-		fileMap.put(AutomationBase.STANDARD_LOG_FILENAME, this.output != null ? this.output.getBytes() : new byte[]
-		{});
-
-		ZipUtilities.createZipMap(new File(publicanBuildOutput), publicanBuildOutput, fileMap);
-		final byte[] zipFile = ZipUtilities.createZip(fileMap);
-
-		HTTPUtilities.writeOutContent(zipFile, "SVNStats.zip", MIMEUtilities.ZIP_MIME_TYPE);
-	}
-
-	public void saveConfig()
-	{
-		if (this.configData.isValid())
-		{
-			this.configDataItems.add(new ConfigXMLData(this.configData));
-			this.message = "";
-		}
-		else
-		{
-			this.message = "Config entry is invalid.";
-		}
-	}
-
-	public void setConfigData(final ConfigXMLData configData)
-	{
-		this.configData = configData;
-	}
-
-	public void setConfigDataItems(List<ConfigXMLData> configDataItems)
-	{
-		this.configDataItems = configDataItems;
-	}
-
 }
 
 

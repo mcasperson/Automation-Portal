@@ -1,5 +1,6 @@
 package com.redhat.automationportal.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,10 +12,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 
 import com.redhat.automationportal.scripts.BugzillaReportGenerator;
 import com.redhat.automationportal.scripts.ParseToc;
 import com.redhat.automationportal.scripts.RegenSplash;
+import com.redhat.automationportal.scripts.svnstats.ConfigXMLData;
+import com.redhat.automationportal.scripts.svnstats.SvnStats;
+import com.redhat.ecs.commonutils.CollectionUtilities;
 
 @Path("/")
 public class AutomationPortalREST
@@ -197,6 +203,47 @@ public class AutomationPortalREST
 		finally
 		{
 			logger.info("<- AutomationPortalREST.RegenSplashGetJsonProducts()");
+		}
+
+	}
+	
+	@GET
+	@Consumes("text/plain")
+	@Produces("application/json")
+	@Path("/SVNStats/get/json/Execute")
+	public Response SVNStatsGetJson(
+			@QueryParam("entries") final String entriesJson,
+			@HeaderParam("Referer") final String refererHeader,
+			@HeaderParam("Origin") final String originHeader)
+	{
+		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+
+		try
+		{
+			logger.info("-> AutomationPortalREST.SVNStatsGetJson()");
+			
+			final ObjectMapper mapper = new ObjectMapper();
+			final List<ConfigXMLData> entries = CollectionUtilities.toArrayList(mapper.convertValue(entriesJson, ConfigXMLData[].class));
+			
+			final SvnStats script = new SvnStats();
+			
+			final boolean result = script.run(entries);
+
+			final String message = script.getMessage();			
+			final String output = script.getOutput();
+			
+			logger.info("AutomationPortalREST.SVNStatsGetJson() message: " + message);
+			logger.info("AutomationPortalREST.SVNStatsGetJson() output: " + output);
+		
+			return Response.status(result ? 200 : 500)
+					/* CORS header allowing cross-site requests */
+					.header("Access-Control-Allow-Origin", originHeader)
+					.entity(new AutomationPortalResponseData(message, output))
+					.build();
+		}
+		finally
+		{
+			logger.info("<- AutomationPortalREST.SVNStatsGetJson()");
 		}
 
 	}
