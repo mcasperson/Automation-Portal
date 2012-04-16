@@ -200,11 +200,11 @@ public class AutomationPortalREST
 			
 			final ArrayList<ConfigXMLData> entries = new ArrayList<ConfigXMLData>();
 			if (raw instanceof List<?>)
-			{ // array
+			{
 				CollectionUtilities.addAll(mapper.convertValue(raw, ConfigXMLData[].class), entries);
 			}
 			else
-			{ // single object
+			{
 				entries.add(mapper.convertValue(raw, ConfigXMLData.class));
 			}
 
