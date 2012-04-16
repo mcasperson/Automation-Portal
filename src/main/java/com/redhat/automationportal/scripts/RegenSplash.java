@@ -38,7 +38,7 @@ import org.w3c.dom.Node;
  */
 public class RegenSplash extends AutomationBase
 {
-	private static String BUILD = "20120105-0812";
+	private static String BUILD = "20120416-1013";
 	//private static final String PRODUCT_RE = "<span id=\".*?\" class=\"product\">(?<product>.*?)</span>";
 	private static final String PASSWORD_ENV_VARIABLE_NAME = "PASSWORD";
 	private static final String SCRIPT_NAME = "regensplash.rb";
