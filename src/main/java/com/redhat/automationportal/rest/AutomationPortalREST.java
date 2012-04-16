@@ -1,8 +1,8 @@
 package com.redhat.automationportal.rest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -13,8 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.redhat.automationportal.scripts.BugzillaReportGenerator;
@@ -34,10 +32,11 @@ public class AutomationPortalREST
 	public Response BugzillaReportGeneratorGetJson(@QueryParam("bugzillaUsername") final String bugzillaUsername, @QueryParam("bugzillaPassword") final String bugzillaPassword, @HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
 	{
 		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+		final UUID uuid = UUID.randomUUID();
 
 		try
 		{
-			logger.info("-> AutomationPortalREST.BugzillaReportGeneratorGetJson()");
+			logger.info("-> " + uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson()");
 
 			final BugzillaReportGenerator script = new BugzillaReportGenerator();
 			script.setBugzillaPassword(bugzillaPassword);
@@ -47,8 +46,8 @@ public class AutomationPortalREST
 			final String message = script.getMessage();
 			final String output = script.getOutput();
 
-			logger.info("AutomationPortalREST.BugzillaReportGeneratorGetJson() message: " + message);
-			logger.info("AutomationPortalREST.BugzillaReportGeneratorGetJson() output: " + output);
+			logger.info(uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson() message: " + message);
+			logger.info(uuid + "AutomationPortalREST.BugzillaReportGeneratorGetJson() output: " + output);
 
 			return Response.status(result ? 200 : 500)
 			/* CORS header allowing cross-site requests */
@@ -56,7 +55,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- AutomationPortalREST.BugzillaReportGeneratorGetJson()");
+			logger.info("<- " + uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson()");
 		}
 
 	}
@@ -68,10 +67,11 @@ public class AutomationPortalREST
 	public Response ParseTOCGetJson(@HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
 	{
 		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+		final UUID uuid = UUID.randomUUID();
 
 		try
 		{
-			logger.info("-> AutomationPortalREST.ParseTOCGetJson()");
+			logger.info("-> " + uuid + " AutomationPortalREST.ParseTOCGetJson()");
 
 			final ParseToc script = new ParseToc();
 			final boolean result = script.run();
@@ -79,8 +79,8 @@ public class AutomationPortalREST
 			final String message = script.getMessage();
 			final String output = script.getOutput();
 
-			logger.info("AutomationPortalREST.ParseTOCGetJson() message: " + message);
-			logger.info("AutomationPortalREST.ParseTOCGetJson() output: " + output);
+			logger.info(uuid + " AutomationPortalREST.ParseTOCGetJson() message: " + message);
+			logger.info(uuid + " AutomationPortalREST.ParseTOCGetJson() output: " + output);
 
 			return Response.status(result ? 200 : 500)
 			/* CORS header allowing cross-site requests */
@@ -88,7 +88,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- AutomationPortalREST.ParseTOCGetJson()");
+			logger.info("<- " + uuid + " AutomationPortalREST.ParseTOCGetJson()");
 		}
 
 	}
@@ -101,10 +101,11 @@ public class AutomationPortalREST
 			@HeaderParam("Origin") final String originHeader)
 	{
 		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+		final UUID uuid = UUID.randomUUID();
 
 		try
 		{
-			logger.info("-> AutomationPortalREST.RegenSplashGetJson()");
+			logger.info("-> " + uuid + " AutomationPortalREST.RegenSplashGetJson()");
 
 			final RegenSplash script = new RegenSplash();
 			script.setUsername(username);
@@ -117,8 +118,8 @@ public class AutomationPortalREST
 			final String message = script.getMessage();
 			final String output = script.getOutput();
 
-			logger.info("AutomationPortalREST.RegenSplashGetJson() message: " + message);
-			logger.info("AutomationPortalREST.RegenSplashGetJson() output: " + output);
+			logger.info(uuid + " AutomationPortalREST.RegenSplashGetJson() message: " + message);
+			logger.info(uuid + " AutomationPortalREST.RegenSplashGetJson() output: " + output);
 
 			return Response.status(result ? 200 : 500)
 			/* CORS header allowing cross-site requests */
@@ -126,7 +127,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- AutomationPortalREST.RegenSplashGetJson()");
+			logger.info("<- " + uuid + " AutomationPortalREST.RegenSplashGetJson()");
 		}
 
 	}
@@ -138,10 +139,11 @@ public class AutomationPortalREST
 	public Response RegenSplashGetJsonSites(@HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
 	{
 		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+		final UUID uuid = UUID.randomUUID();
 
 		try
 		{
-			logger.info("-> AutomationPortalREST.RegenSplashGetJsonSites()");
+			logger.info("-> " + uuid + " AutomationPortalREST.RegenSplashGetJsonSites()");
 
 			final RegenSplash script = new RegenSplash();
 			final List<StringPair> sites = script.getSites();
@@ -152,7 +154,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- AutomationPortalREST.RegenSplashGetJsonSites()");
+			logger.info("<- " + uuid + " AutomationPortalREST.RegenSplashGetJsonSites()");
 		}
 
 	}
@@ -164,10 +166,11 @@ public class AutomationPortalREST
 	public Response RegenSplashGetJsonProducts(@QueryParam("tocUrl") final String tocUrl, @HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
 	{
 		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+		final UUID uuid = UUID.randomUUID();
 
 		try
 		{
-			logger.info("-> AutomationPortalREST.RegenSplashGetJsonProducts()");
+			logger.info("-> " + uuid + " AutomationPortalREST.RegenSplashGetJsonProducts()");
 
 			final RegenSplash script = new RegenSplash();
 			final List<String> products = script.getProducts(tocUrl);
@@ -178,7 +181,7 @@ public class AutomationPortalREST
 		}
 		finally
 		{
-			logger.info("<- AutomationPortalREST.RegenSplashGetJsonProducts()");
+			logger.info("<- " + uuid + " AutomationPortalREST.RegenSplashGetJsonProducts()");
 		}
 
 	}
@@ -190,11 +193,13 @@ public class AutomationPortalREST
 	public Response SVNStatsGetJson(@QueryParam("entries") final String entriesJson, @HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
 	{
 		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+		final UUID uuid = UUID.randomUUID();
 
 		try
 		{
-			logger.info("-> AutomationPortalREST.SVNStatsGetJson()");
+			logger.info("-> " + uuid + " AutomationPortalREST.SVNStatsGetJson()");
 
+			/* extract the list of ConfigXMLData elemets from the URL query parameter */
 			final ObjectMapper mapper = new ObjectMapper();
 			final Object raw = mapper.readValue(entriesJson, Object.class);
 			
@@ -208,6 +213,7 @@ public class AutomationPortalREST
 				entries.add(mapper.convertValue(raw, ConfigXMLData.class));
 			}
 
+			/* run the script */
 			final SvnStats script = new SvnStats();
 
 			final boolean result = script.run(entries);
@@ -215,8 +221,8 @@ public class AutomationPortalREST
 			final String message = script.getMessage();
 			final String output = script.getOutput();
 
-			logger.info("AutomationPortalREST.SVNStatsGetJson() message: " + message);
-			logger.info("AutomationPortalREST.SVNStatsGetJson() output: " + output);
+			logger.info(uuid + " AutomationPortalREST.SVNStatsGetJson() message: " + message);
+			logger.info(uuid + " AutomationPortalREST.SVNStatsGetJson() output: " + output);
 
 			return Response.status(result ? 200 : 500)
 			/* CORS header allowing cross-site requests */
@@ -224,13 +230,15 @@ public class AutomationPortalREST
 		}
 		catch (final Exception ex)
 		{
+			logger.info(uuid + " AutomationPortalREST.SVNStatsGetJson() Exception: " + ex.toString());
+			
 			return Response.status(500)
 			/* CORS header allowing cross-site requests */
 			.header("Access-Control-Allow-Origin", originHeader).entity(new AutomationPortalResponseData(ex.getMessage(), ex.toString())).build();
 		}
 		finally
 		{
-			logger.info("<- AutomationPortalREST.SVNStatsGetJson()");
+			logger.info("<- " + uuid + " AutomationPortalREST.SVNStatsGetJson()");
 		}
 
 	}

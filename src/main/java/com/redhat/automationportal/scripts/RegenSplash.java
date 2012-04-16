@@ -63,6 +63,7 @@ public class RegenSplash extends AutomationBase
 		return sites;
 	}
 
+	@Override
 	public String getBuild()
 	{
 		return BUILD;
@@ -195,6 +196,7 @@ public class RegenSplash extends AutomationBase
 		return true;
 	}
 
+	@Override
 	protected boolean validateInput()
 	{
 		if (super.validateInput())

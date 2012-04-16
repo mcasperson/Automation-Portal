@@ -2,18 +2,11 @@ package com.redhat.automationportal.scripts.svnstats;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import com.redhat.automationportal.base.AutomationBase;
 import com.redhat.ecs.commonutils.FileUtilities;
 import com.redhat.ecs.commonutils.HTMLUtilities;
-import com.redhat.ecs.commonutils.HTTPUtilities;
-import com.redhat.ecs.commonutils.MIMEUtilities;
-import com.redhat.ecs.commonutils.ZipUtilities;
 
 /**
  * 	Requires:
@@ -27,6 +20,7 @@ public class SvnStats extends AutomationBase
 	private static final String HTML_SINGLE_BUILD_DIR = "/tmp/en-US/html-single";
 	private final SimpleDateFormat xmlFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
+	@Override
 	public String getBuild()
 	{
 		return BUILD;
