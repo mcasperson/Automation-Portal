@@ -78,7 +78,6 @@ public class SvnStats extends AutomationBase
 				}
 				else
 				{
-					this.output = "=== OUTPUT LOG ===\n" + this.output;
 					this.success = false;
 				}
 			}
