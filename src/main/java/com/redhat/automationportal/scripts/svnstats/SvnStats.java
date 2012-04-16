@@ -57,7 +57,7 @@ public class SvnStats extends AutomationBase
 			"cp -R \\\"" + TEMPLATE_DIR + "/\\\"* \\\"" + this.getTmpDirectory(randomInt) + "\\\" " +
 
 			// dump the new config.xml file
-			"&& echo '" + configXMLEscaped + "' > \\\"" + this.getTmpDirectory(randomInt) + "/config.xml\\\" " +
+			"&& echo " + configXMLEscaped + " > \\\"" + this.getTmpDirectory(randomInt) + "/config.xml\\\" " +
 
 			// enter the scripts directory
 			"&& cd \\\"" + this.getTmpDirectory(randomInt) + "/scripts\\\" " +
