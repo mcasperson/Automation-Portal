@@ -51,6 +51,7 @@ public class SvnStats extends AutomationBase
 		final Integer randomInt = this.generateRandomInt();
 		
 		this.message = "";
+		this.output = "";
 		
 		if (configDataItems.size() != 0)
 		{
