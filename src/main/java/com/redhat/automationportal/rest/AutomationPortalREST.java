@@ -1,5 +1,6 @@
 package com.redhat.automationportal.rest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -12,6 +13,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 
@@ -223,7 +226,7 @@ public class AutomationPortalREST
 			logger.info("-> AutomationPortalREST.SVNStatsGetJson()");
 			
 			final ObjectMapper mapper = new ObjectMapper();
-			final List<ConfigXMLData> entries = CollectionUtilities.toArrayList(mapper.convertValue(entriesJson, ConfigXMLData[].class));
+			final ArrayList<ConfigXMLData> entries = mapper.readValue(entriesJson, ArrayList.class);
 			
 			final SvnStats script = new SvnStats();
 			
@@ -239,6 +242,14 @@ public class AutomationPortalREST
 					/* CORS header allowing cross-site requests */
 					.header("Access-Control-Allow-Origin", originHeader)
 					.entity(new AutomationPortalResponseData(message, output))
+					.build();
+		}
+		catch (final Exception ex)
+		{
+			return Response.status(500)
+					/* CORS header allowing cross-site requests */
+					.header("Access-Control-Allow-Origin", originHeader)
+					.entity(new AutomationPortalResponseData(ex.getMessage(), ex.toString()))
 					.build();
 		}
 		finally
