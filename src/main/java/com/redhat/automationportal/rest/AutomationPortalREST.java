@@ -65,39 +65,6 @@ public class AutomationPortalREST
 	@GET
 	@Consumes("text/plain")
 	@Produces("application/json")
-	@Path("/ParseTOC/get/json/Execute")
-	public Response ParseTOCGetJson(@HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
-	{
-		final Logger logger = Logger.getLogger("com.redhat.automationportal");
-		final UUID uuid = UUID.randomUUID();
-
-		try
-		{
-			logger.info("-> " + BUILD + " " + uuid + " AutomationPortalREST.ParseTOCGetJson()");
-
-			final ParseToc script = new ParseToc();
-			final boolean result = script.run();
-
-			final String message = script.getMessage();
-			final String output = script.getOutput();
-
-			logger.info(BUILD + " " + uuid + " AutomationPortalREST.ParseTOCGetJson() message: " + message);
-			logger.info(BUILD + " " + uuid + " AutomationPortalREST.ParseTOCGetJson() output: " + output);
-
-			return Response.status(result ? 200 : 500)
-			/* CORS header allowing cross-site requests */
-			.header("Access-Control-Allow-Origin", originHeader).entity(new AutomationPortalResponseData(message, output)).build();
-		}
-		finally
-		{
-			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.ParseTOCGetJson()");
-		}
-
-	}
-
-	@GET
-	@Consumes("text/plain")
-	@Produces("application/json")
 	@Path("/RegenSplash/get/json/Execute")
 	public Response RegenSplashGetJson(@QueryParam("tocUrl") final String tocUrl, @QueryParam("productName") final String productName, @QueryParam("username") final String username, @QueryParam("password") final String password, @HeaderParam("Referer") final String refererHeader,
 			@HeaderParam("Origin") final String originHeader)
