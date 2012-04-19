@@ -35,6 +35,7 @@ import org.w3c.dom.Node;
  *	publican &gt;= 2.6 http://porkchop.redhat.com/rel-eng/repos/eng-rhel-6/x86_64/
  *	regensplash.rb https://engineering.redhat.com/trac/ContentServices/wiki/RegenSplash
  *	publican_build https://svn.devel.redhat.com/repos/ecs/toolkit/publican_build/publican_build
+ *	rhpkg http://download.devel.redhat.com/rel-eng/dist-git/rhel/rhpkg.repo
  */
 public class RegenSplash extends AutomationBase
 {
