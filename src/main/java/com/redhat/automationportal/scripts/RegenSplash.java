@@ -140,7 +140,7 @@ public class RegenSplash extends AutomationBase
 		"kinit \\\"" + this.getUsername() + "\\\" " +
 		 
 		/* have to override the rpm build path */
-		"&& echo \\\"topdir: ${HOME}\\\" > ${HOME}/.rpmrc " +
+		"&& echo \\\"%_topdir ${HOME}/rpmbuild\\\" > ${HOME}/.rpmmacros " +
 
 		/* copy the script to the temporary directory */
 		"&& cp \\\"" + SCRIPT_PATH + "\\\" \\\"" + getTmpDirectory(randomInt) + "\\\" " +
