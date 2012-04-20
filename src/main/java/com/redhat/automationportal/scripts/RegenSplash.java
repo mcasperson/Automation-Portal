@@ -138,6 +138,9 @@ public class RegenSplash extends AutomationBase
 		 * challenge / response data needed to supply the password.
 		 */
 		"kinit \\\"" + this.getUsername() + "\\\" " +
+		 
+		/* have to override the rpm build path */
+		"&& echo \\\"topdir: ${HOME}\\\" > ${HOME}/.rpmrc " +
 
 		/* copy the script to the temporary directory */
 		"&& cp \\\"" + SCRIPT_PATH + "\\\" \\\"" + getTmpDirectory(randomInt) + "\\\" " +
@@ -190,8 +193,8 @@ public class RegenSplash extends AutomationBase
 		 * password. This prevents the strings from showing up in a ps listing.
 		 */
 		final LinkedHashMap<String, String> responses = new LinkedHashMap<String, String>();
-		// responses.put("REDHAT.COM", "${" + PASSWORD_ENV_VARIABLE_NAME + "}");
-		responses.put("REDHAT.COM", this.getPassword());
+		responses.put("REDHAT.COM", "${" + PASSWORD_ENV_VARIABLE_NAME + "}");
+		//responses.put("REDHAT.COM", this.getPassword());
 
 		runScript(script, randomInt, true, true, true, responses, environment);
 
