@@ -138,9 +138,6 @@ public class RegenSplash extends AutomationBase
 		 * challenge / response data needed to supply the password.
 		 */
 		"kinit \\\"" + this.getUsername() + "\\\" " +
-		 
-		/* have to override the rpm build path */
-		"&& echo \\\"%_topdir ${HOME}/rpmbuild\\\" > ${HOME}/.rpmmacros " +
 
 		/* copy the script to the temporary directory */
 		"&& cp \\\"" + SCRIPT_PATH + "\\\" \\\"" + getTmpDirectory(randomInt) + "\\\" " +
