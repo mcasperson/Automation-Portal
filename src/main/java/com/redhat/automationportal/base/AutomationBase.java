@@ -373,8 +373,45 @@ public abstract class AutomationBase
 			/* exit the if statement */
 			"fi && ";
 
+			/* create the home directory if it does not exist */
+			final String createHomeDirectory = "if [ ! -d ${HOME} ]; then " +
+
+			/* make the home folder and any parents */
+			"mkdir -p ${HOME} " +
+			
+			/* set the owner to the user, or the default automation-user */
+			"&& chown " + (this.username == null ? "automation-user" : this.username) + " ${HOME} " +
+			
+			/* set the group to automation-user */
+			"&& chgrp automation-user ${HOME} " +
+
+			/*
+			 * Prevent access to any other users
+			 */
+			"&& chmod og-wrx ${HOME} " +
+			 
+			/*
+			 * make the group sticky, preventing any new files created in this
+			 * directory from having the invalid user group by default
+			 */
+			"&& chmod g+s ${HOME}; " +
+
+			/* exit the if statement */
+			"fi && ";
+			
+			/* remove anything in the home directory once the command is complete */
+			final String cleanHomeDirectory = 
+			/* does the home directory exist? */
+			"&& if [ -d ${HOME} ]; then " +
+					
+			/* clean it out */
+			"rm -rf ${HOME}\\*" +
+			
+			/* exit the statement */
+			"fi";
+
 			// run bash
-			String mainCommand = rootRequiredCommand + changeTempDirPermissionsCommand +
+			String mainCommand = rootRequiredCommand + changeTempDirPermissionsCommand + createHomeDirectory +
 
 			/*
 			 * Use empty to create a pseudo terminal that su will run in.
@@ -385,7 +422,10 @@ public abstract class AutomationBase
 			runAsUserCommand +
 
 			/* add the script to the sudo -c command */
-			"\"" + script + "\" ";
+			"\"" + script + "\" " +
+			
+			/* clean the home directory */
+			cleanHomeDirectory;
 
 			/*
 			 * An extending class can define a number of challenge / response
