@@ -374,27 +374,27 @@ public abstract class AutomationBase
 			"fi && ";
 
 			/* create the home directory if it does not exist */
-			final String createHomeDirectory = "if [ ! -d ${HOME} ]; then " +
+			final String createHomeDirectory = "if [ ! -d ~" + (this.username == null ? "automation-user" : this.username) + " ]; then " +
 
 			/* make the home folder and any parents */
-			"mkdir -p ${HOME} " +
+			"mkdir -p ~" + (this.username == null ? "automation-user" : this.username) + " " +
 			
 			/* set the owner to the user, or the default automation-user */
-			"&& chown " + (this.username == null ? "automation-user" : this.username) + " ${HOME} " +
+			"&& chown " + (this.username == null ? "automation-user" : this.username) + " ~" + (this.username == null ? "automation-user" : this.username) + " " +
 			
 			/* set the group to automation-user */
-			"&& chgrp automation-user ${HOME} " +
+			"&& chgrp automation-user ~" + (this.username == null ? "automation-user" : this.username) + " " +
 
 			/*
 			 * Prevent access to any other users
 			 */
-			"&& chmod og-wrx ${HOME} " +
+			"&& chmod og-wrx ~" + (this.username == null ? "automation-user" : this.username) + " " +
 			 
 			/*
 			 * make the group sticky, preventing any new files created in this
 			 * directory from having the invalid user group by default
 			 */
-			"&& chmod g+s ${HOME}; " +
+			"&& chmod g+s ~" + (this.username == null ? "automation-user" : this.username) + "; " +
 
 			/* exit the if statement */
 			"fi && ";
@@ -402,13 +402,13 @@ public abstract class AutomationBase
 			/* remove anything in the home directory once the command is complete */
 			final String cleanHomeDirectory = 
 			/* does the home directory exist? */
-			"&& if [ -d ${HOME} ]; then " +
+			"&& if [ -d ~" + (this.username == null ? "automation-user" : this.username) + " ]; then " +
 					
 			/* clean it out */
-			"rm -rf ${HOME}\\*" +
+			"rm -rf ~" + (this.username == null ? "automation-user" : this.username) + "/*; " +
 			
 			/* exit the statement */
-			"fi";
+			"fi ";
 
 			// run bash
 			String mainCommand = rootRequiredCommand + changeTempDirPermissionsCommand + createHomeDirectory +
@@ -421,12 +421,9 @@ public abstract class AutomationBase
 
 			runAsUserCommand +
 
-			/* add the script to the sudo -c command */
-			"\"" + script + "\" " +
-			
-			/* clean the home directory */
-			cleanHomeDirectory;
-
+			/* add the script to the sudo -c command, and clean the home directory */
+			"\"" + script + cleanHomeDirectory + "\" ";
+		
 			/*
 			 * An extending class can define a number of challenge / response
 			 * pairs for applications like kinit that usually expect input from
