@@ -171,13 +171,6 @@ public class RegenSplash extends AutomationBase
 		// touch $1
 		// exit 0
 
-		/*
-		 * The rhpkg application needs a home directory to create the rpmbuild
-		 * directory. Because we are using the user account under su, there is
-		 * no guarantee that the home directory is available. So we override the
-		 * HOME environment variable and set it to the temporary directory that
-		 * has been created for the duration of this script.
-		 */
 		final String[] environment = new String[]
 		{ PASSWORD_ENV_VARIABLE_NAME + "=" + this.getPassword(), "CVSEDITOR=/opt/automation-interface/cvs/dummyeditor.sh" };
 
