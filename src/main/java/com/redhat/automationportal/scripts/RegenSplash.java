@@ -179,7 +179,7 @@ public class RegenSplash extends AutomationBase
 		 * has been created for the duration of this script.
 		 */
 		final String[] environment = new String[]
-		{ "HOME=" + getTmpDirectory(randomInt), PASSWORD_ENV_VARIABLE_NAME + "=" + this.getPassword(), "CVSEDITOR=/opt/automation-interface/cvs/dummyeditor.sh" };
+		{ PASSWORD_ENV_VARIABLE_NAME + "=" + this.getPassword(), "CVSEDITOR=/opt/automation-interface/cvs/dummyeditor.sh" };
 
 		/*
 		 * The kinit command will expect to be fed a password for the current
