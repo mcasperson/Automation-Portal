@@ -27,6 +27,7 @@ import com.redhat.ecs.commonutils.FileUtilities;
 public abstract class AutomationBase
 {
 	protected static final String STANDARD_LOG_FILENAME = "AutomationInterface.log";
+	private static final String EMPTY_WAIT_TIME_SECONDS = "60";
 	protected String message;
 	protected String output;
 	protected String password;
@@ -442,7 +443,7 @@ public abstract class AutomationBase
 			 */
 			if (waitResponses != null)
 				for (final String match : waitResponses.keySet())
-					mainCommand += "&& /usr/local/bin/empty -w -i " + outFifo + " -o " + inFifo + " \"" + match + "\" \"" + waitResponses.get(match) + "\\n\"; [[ $? -eq 1 ]] ";
+					mainCommand += "&& /usr/local/bin/empty -w -t " + EMPTY_WAIT_TIME_SECONDS + " -i " + outFifo + " -o " + inFifo + " \"" + match + "\" \"" + waitResponses.get(match) + "\\n\"; [[ $? -eq 1 ]] ";
 
 			/*
 			 * Dump the output of the escape out fifo file into a log file. The
