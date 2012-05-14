@@ -450,7 +450,7 @@ public abstract class AutomationBase
 			"cd ~" + (this.username == null ? "automation-user" : this.username) + " " +
 					
 			/* clean it out (With the exception of SAVE_HOME_FOLDER) */
-			"&& find . -type d \\( ! -iname \\\"" + SAVE_HOME_FOLDER + "\\\" \\) -execdir rm -rfv {} +; " +
+			"&& find . -type d \\( ! -iname \"" + SAVE_HOME_FOLDER + "\" \\) -execdir rm -rfv {} +; " +
 			
 			//"rm -rf ~" + (this.username == null ? "automation-user" : this.username) + "/*; " +
 			
@@ -468,8 +468,8 @@ public abstract class AutomationBase
 
 			runAsUserCommand +
 
-			/* add the script to the sudo -c command, and clean the home directory */
-			"\"" + script + cleanHomeDirectory + "\" ";
+			/* add the script to the sudo -c command */
+			"\"" + script + "\" ";
 		
 			/*
 			 * An extending class can define a number of challenge / response
@@ -500,7 +500,7 @@ public abstract class AutomationBase
 			 * You can run tail -f on this log file to watch the progress of the
 			 * script on the server.
 			 */
-			mainCommand += "&& cat " + outFifo + " > " + log;
+			mainCommand += "&& cat " + outFifo + " > " + log;// + cleanHomeDirectory;
 
 			final String[] command = new String[]
 			{ "/bin/bash", "-c", mainCommand };
