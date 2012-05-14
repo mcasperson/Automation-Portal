@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.redhat.automationportal.scripts.BugzillaReportGenerator;
+import com.redhat.automationportal.scripts.FlagSearch;
 import com.redhat.automationportal.scripts.ParseToc;
 import com.redhat.automationportal.scripts.RegenSplash;
 import com.redhat.automationportal.scripts.svnstats.ConfigXMLData;
@@ -58,6 +59,43 @@ public class AutomationPortalREST
 		finally
 		{
 			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.BugzillaReportGeneratorGetJson()");
+		}
+
+	}
+	
+	@GET
+	@Consumes("text/plain")
+	@Produces("application/json")
+	@Path("/FlagSearch/get/json/Execute")
+	public Response FlagSearchGetJson(@QueryParam("bugzillaUsername") final String bugzillaUsername, @QueryParam("bugzillaPassword") final String bugzillaPassword, @QueryParam("productName") final String productName, @QueryParam("component") final String component, @HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
+	{
+		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+		final UUID uuid = UUID.randomUUID();
+
+		try
+		{
+			logger.info("-> " + BUILD + " " + uuid + " AutomationPortalREST.FlagSearchGetJson()");
+
+			final FlagSearch script = new FlagSearch();
+			script.setBugzillaPassword(bugzillaPassword);
+			script.setBugzillaUsername(bugzillaUsername);
+			script.setComponent(component);
+			script.setProductName(productName);
+			final boolean result = script.run();
+
+			final String message = script.getMessage();
+			final String output = script.getOutput();
+
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.FlagSearchGetJson() message: " + message);
+			logger.info(BUILD + " " + uuid + "AutomationPortalREST.FlagSearchGetJson() output: " + output);
+
+			return Response.status(result ? 200 : 500)
+			/* CORS header allowing cross-site requests */
+			.header("Access-Control-Allow-Origin", originHeader).entity(new AutomationPortalResponseData(message, output)).build();
+		}
+		finally
+		{
+			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.FlagSearchGetJson()");
 		}
 
 	}
