@@ -383,7 +383,7 @@ public abstract class AutomationBase
 			final String createHomeDirectory = "if [ ! -d ~" + (this.username == null ? "automation-user" : this.username) + " ]; then " +
 
 			/* make the home folder and any parents */
-			"mkdir -p ~" + (this.username == null ? "automation-user" : this.username) + " " +
+			"mkdir -p ~" + (this.username == null ? "automation-user" : this.username) + "; " +
 
 			/* exit the if statement */
 			"fi " +
@@ -450,7 +450,7 @@ public abstract class AutomationBase
 			"cd ~" + (this.username == null ? "automation-user" : this.username) + " " +
 					
 			/* clean it out (With the exception of SAVE_HOME_FOLDER) */
-			"&& find . -type d \\( ! -iname \"" + SAVE_HOME_FOLDER + "\" ! -iname \"bar\" \\) -execdir rm -rfv {} +; " +
+			"&& find . -type d \\( ! -iname \\\"" + SAVE_HOME_FOLDER + "\\\" \\) -execdir rm -rfv {} +; " +
 			
 			//"rm -rf ~" + (this.username == null ? "automation-user" : this.username) + "/*; " +
 			

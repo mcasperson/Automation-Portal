@@ -134,7 +134,7 @@ public class FlagSearch extends AutomationBase
 			"&& if [ -f ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + " ]; then " +
 			
 			/* copy the saved file */
-			"cp ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + " \\\"" + this.getTmpDirectory(randomInt) + "\\\"; "  +
+			"cp ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + " \\\"" + this.getTmpDirectory(randomInt) + "/\\\"; "  +
 			
 			/* exit the statement */
 			"fi " +
@@ -146,7 +146,7 @@ public class FlagSearch extends AutomationBase
 			"&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --product_name=\\\"" + this.productName + "\\\" --component=\\\"" + this.component + "\\\" " +
 								
 			// copy the save_searches.txt to the data folder
-			"&& copy \\\"" + this.getTmpDirectory(randomInt) + "/" + PERSIST_FILENAME + "\\\" ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + ""; 
+			"&& cp \\\"" + this.getTmpDirectory(randomInt) + "/" + PERSIST_FILENAME + " ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/ "; 
 
 			runScript(script, randomInt, true, true, true, null, environment);
 
