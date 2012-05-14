@@ -120,12 +120,21 @@ public class FlagSearch extends AutomationBase
 			final String script =
 			// copy the template files
 			"cp -R \\\"" + TEMPLATE_DIR + "/\\\"* \\\"" + this.getTmpDirectory(randomInt) + "\\\" " +
+					
+			// make sure the data folder exists
+			"&& if [ ! -d ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + " ]; then " +
+			
+			// create it if it doesn't
+			"mkdir -p ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "; " +
+			
+			/* exit the statement */
+			"fi " +
 			
 			// If the saved file exists
-			"&& if [ -f ~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "  ]; then " +
+			"&& if [ -f ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + " ]; then " +
 			
 			/* copy the saved file */
-			"cp \\\"~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "\\\" \\\"" + this.getTmpDirectory(randomInt) + "\\\";"  +
+			"cp ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + " \\\"" + this.getTmpDirectory(randomInt) + "\\\"; "  +
 			
 			/* exit the statement */
 			"fi " +
@@ -135,12 +144,9 @@ public class FlagSearch extends AutomationBase
 
 			// run the python script
 			"&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --product_name=\\\"" + this.productName + "\\\" --component=\\\"" + this.component + "\\\" " +
-			
-			// make sure the data folder exists */
-			"&& mkdir -p \\\"~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "\\\" " +
-			
+								
 			// copy the save_searches.txt to the data folder
-			"&& copy \\\"" + this.getTmpDirectory(randomInt) + "/" + PERSIST_FILENAME + "\\\" \\\"~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "\\\""; 
+			"&& copy \\\"" + this.getTmpDirectory(randomInt) + "/" + PERSIST_FILENAME + "\\\" ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + ""; 
 
 			runScript(script, randomInt, true, true, true, null, environment);
 

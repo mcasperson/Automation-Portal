@@ -384,9 +384,15 @@ public abstract class AutomationBase
 
 			/* make the home folder and any parents */
 			"mkdir -p ~" + (this.username == null ? "automation-user" : this.username) + " " +
+
+			/* exit the if statement */
+			"fi " +
+			
+			/* if the home folder does exist, update the permissions (just in case someone has fiddled with them) */
+			"&& if [ -d ~" + (this.username == null ? "automation-user" : this.username) + " ]; then " +
 			
 			/* set the owner to the user, or the default automation-user */
-			"&& chown " + (this.username == null ? "automation-user" : this.username) + " ~" + (this.username == null ? "automation-user" : this.username) + " " +
+			"chown " + (this.username == null ? "automation-user" : this.username) + " ~" + (this.username == null ? "automation-user" : this.username) + " " +
 			
 			/* set the group to automation-user */
 			"&& chgrp automation-user ~" + (this.username == null ? "automation-user" : this.username) + " " +
@@ -400,12 +406,40 @@ public abstract class AutomationBase
 			 * make the group sticky, preventing any new files created in this
 			 * directory from having the invalid user group by default
 			 */
-			"&& chmod g+s ~" + (this.username == null ? "automation-user" : this.username) + " " +
+			"&& chmod g+s ~" + (this.username == null ? "automation-user" : this.username) + "; " +
 			 
-			/* Make the directory that will hold persistent automation portal files */
-			"&& mkdir ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "; " +
-
-			/* exit the if statement */
+			"fi " +
+			
+			/* if the save home folder does not exist */
+			"&& if [ ! -d ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + " ]; then " +
+			
+			/* create it */
+			"mkdir -p ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "; " +
+			
+			/* Exit statement */
+			"fi " +
+			
+			/* if the save home folder does exist, update the permissions (just in case someone has fiddled with them) */
+			"&& if [ -d ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + " ]; then " +
+			
+			/* set the owner to the user, or the default automation-user */
+			"chown " + (this.username == null ? "automation-user" : this.username) + " ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + " " +
+			
+			/* set the group to automation-user */
+			"&& chgrp automation-user ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + " " +
+			
+			/*
+			 * Prevent access to any other users
+			 */
+			"&& chmod og-wrx ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + " " +
+			 
+			/*
+			 * make the group sticky, preventing any new files created in this
+			 * directory from having the invalid user group by default
+			 */
+			"&& chmod g+s ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "; " +
+			 
+			/* Exit statement */
 			"fi && ";
 			
 			/* remove anything in the home directory once the command is complete */
@@ -413,8 +447,10 @@ public abstract class AutomationBase
 			/* does the home directory exist? */
 			"&& if [ -d ~" + (this.username == null ? "automation-user" : this.username) + " ]; then " +
 					
+			"cd ~" + (this.username == null ? "automation-user" : this.username) + " " +
+					
 			/* clean it out (With the exception of SAVE_HOME_FOLDER) */
-			"find . -type d \\( ! -iname \"" + SAVE_HOME_FOLDER + "\" ! -iname \"bar\" \\) -execdir rm -rfv {} +; " +
+			"&& find . -type d \\( ! -iname \"" + SAVE_HOME_FOLDER + "\" ! -iname \"bar\" \\) -execdir rm -rfv {} +; " +
 			
 			//"rm -rf ~" + (this.username == null ? "automation-user" : this.username) + "/*; " +
 			
