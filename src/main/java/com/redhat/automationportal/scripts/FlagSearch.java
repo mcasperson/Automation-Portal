@@ -3,16 +3,19 @@ package com.redhat.automationportal.scripts;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.redhat.automationportal.base.AutomationBase;
 import com.redhat.automationportal.base.Constants;
-import com.redhat.ecs.commonutils.CollectionUtilities;
 import com.redhat.ecs.commonutils.ExecUtilities;
 import com.redhat.ecs.commonutils.PropertyUtils;
 
 public class FlagSearch extends AutomationBase
 {
 	private static String BUILD = "20120514-1344";
+	private static final String ALIAS_RE = "alias \"(?<Alias>.*?)\".*";
+	private static final Pattern ALIAS_RE_PATTERN = Pattern.compile(ALIAS_RE);
 	private static final String TEMPLATE_DIR = "/opt/automation-interface/Flag_search";
 	private static final String SAVE_DATA_FOLDER = "FlagSearch";
 	private static final String PERSIST_FILENAME = "saved_searches.txt";
@@ -86,7 +89,19 @@ public class FlagSearch extends AutomationBase
 			final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			this.success = ExecUtilities.runCommand(process, outputStream);
 			final String output = outputStream.toString();
-			return CollectionUtilities.toArrayList(output.split("\n"));
+			
+			final List<String> retValue = new ArrayList<String>();
+			
+			for (final String alias : output.split("\n"))
+			{
+				final Matcher matcher = ALIAS_RE_PATTERN.matcher(alias);
+				if (matcher.matches())
+				{
+					retValue.add(matcher.group("Alias"));
+				}
+			}
+			
+			return retValue;
 		}
 		catch (final Exception ex)
 		{
