@@ -73,7 +73,14 @@ public class FlagSearch extends AutomationBase
 		Process process = null;
 		try
 		{
-			final String catCommand = "/bin/su " + (this.username == null ? "automation-user" : this.username) + " -c \"if [ -f ~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "  ]; then cat ~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "; fi; \"";
+			final String catCommand = "/bin/su " + (this.username == null ? "automation-user" : this.username) + " -c \"" +
+				/* check to see if the saved file exists */
+				"if [ -f ~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "  ]; then " +
+				/* dump the contents of the file */
+				"cat ~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "; " +
+				/* exit the statement */
+				"fi; \"";
+			
 			final String[] command = new String[]	{ "/bin/bash", "-c", catCommand };
 			process = Runtime.getRuntime().exec(command, ExecUtilities.getEnvironmentVars());
 			final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

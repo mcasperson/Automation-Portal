@@ -97,7 +97,34 @@ public class AutomationPortalREST
 		{
 			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.FlagSearchGetJson()");
 		}
+	}
+	
+	@GET
+	@Consumes("text/plain")
+	@Produces("application/json")
+	@Path("/FlagSearch/get/json/Searches")
+	public Response FlagSearchGetJsonSearches(@HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
+	{
+		final Logger logger = Logger.getLogger("com.redhat.automationportal");
+		final UUID uuid = UUID.randomUUID();
 
+		try
+		{
+			logger.info("-> " + BUILD + " " + uuid + " AutomationPortalREST.FlagSearchGetJsonSearches()");
+
+			final FlagSearch script = new FlagSearch();
+			final List<String> result = script.getSavedSearches();
+			
+			logger.info(BUILD + " " + uuid + " AutomationPortalREST.FlagSearchGetJsonSearches() return value: " + result);
+
+			return Response.ok()
+			/* CORS header allowing cross-site requests */
+			.header("Access-Control-Allow-Origin", originHeader).entity(result).build();
+		}
+		finally
+		{
+			logger.info("<- " + BUILD + " " + uuid + " AutomationPortalREST.FlagSearchGetJsonSearches()");
+		}
 	}
 
 	@GET
