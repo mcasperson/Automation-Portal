@@ -146,9 +146,13 @@ public class FlagSearch extends AutomationBase
 			{
 				command = "&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --load --alias=\\\"" + this.loadSearch + "\\\"";
 			}
-			else if (this.productName != null && !this.productName.isEmpty() && this.component != null && !this.component.isEmpty())
+			else if (this.productName != null && !this.productName.isEmpty() && this.component != null && !this.component.isEmpty() && (this.saveSearch == null || this.saveSearch.isEmpty()))
 			{
 				command = "&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --product_name=\\\"" + this.productName + "\\\" --component=\\\"" + this.component + "\\\" ";
+			}
+			else if (this.productName != null && !this.productName.isEmpty() && this.component != null && !this.component.isEmpty() && this.saveSearch != null && !this.saveSearch.isEmpty())
+			{
+				command = "&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --product_name=\\\"" + this.productName + "\\\" --component=\\\"" + this.component + "\\\" --save --alias=\\\"" + this.saveSearch + "\\\" ";
 			}
 
 			if (command != null)
@@ -218,12 +222,12 @@ public class FlagSearch extends AutomationBase
 		this.loadSearch = loadSearch;
 	}
 
-	private String getSaveSearch()
+	public String getSaveSearch()
 	{
 		return saveSearch;
 	}
 
-	private void setSaveSearch(String saveSearch)
+	public void setSaveSearch(String saveSearch)
 	{
 		this.saveSearch = saveSearch;
 	}

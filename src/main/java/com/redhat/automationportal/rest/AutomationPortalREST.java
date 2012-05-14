@@ -67,7 +67,7 @@ public class AutomationPortalREST
 	@Consumes("text/plain")
 	@Produces("application/json")
 	@Path("/FlagSearch/get/json/Execute")
-	public Response FlagSearchGetJson(@QueryParam("bugzillaUsername") final String bugzillaUsername, @QueryParam("bugzillaPassword") final String bugzillaPassword, @QueryParam("productName") final String productName, @QueryParam("component") final String component, @QueryParam("loadSearch") final String loadSearch, @HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
+	public Response FlagSearchGetJson(@QueryParam("bugzillaUsername") final String bugzillaUsername, @QueryParam("bugzillaPassword") final String bugzillaPassword, @QueryParam("productName") final String productName, @QueryParam("component") final String component, @QueryParam("saveSearch") final String saveSearch, @QueryParam("loadSearch") final String loadSearch, @HeaderParam("Referer") final String refererHeader, @HeaderParam("Origin") final String originHeader)
 	{
 		final Logger logger = Logger.getLogger("com.redhat.automationportal");
 		final UUID uuid = UUID.randomUUID();
@@ -82,6 +82,7 @@ public class AutomationPortalREST
 			script.setComponent(component);
 			script.setProductName(productName);
 			script.setLoadSearch(loadSearch);
+			script.setSaveSearch(saveSearch);
 			final boolean result = script.run();
 
 			final String message = script.getMessage();
