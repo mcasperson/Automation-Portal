@@ -304,7 +304,10 @@ public abstract class AutomationBase
 				{
 					final String response = waitResponses.get(match);
 					if (!checkStringQuotesAreEscaped(response) || !checkStringQuotesAreEscaped(match))
+					{
+						this.message = "The script was improperly formatted";
 						return;
+					}
 				}
 			}
 

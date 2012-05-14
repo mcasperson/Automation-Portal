@@ -94,7 +94,7 @@ public class FlagSearch extends AutomationBase
 			"&& cd \\\"" + this.getTmpDirectory(randomInt) + "\\\" " +
 
 			// run the python script
-			"&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --product_name=" + this.productName + " --component=" + this.component;
+			"&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --product_name=\\\"" + this.productName + "\\\" --component=\\\"" + this.component + "\\\"";
 
 			runScript(script, randomInt, true, true, true, null, environment);
 
