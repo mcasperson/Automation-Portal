@@ -1,7 +1,13 @@
 package com.redhat.automationportal.scripts;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.redhat.automationportal.base.AutomationBase;
 import com.redhat.automationportal.base.Constants;
+import com.redhat.ecs.commonutils.CollectionUtilities;
+import com.redhat.ecs.commonutils.ExecUtilities;
 import com.redhat.ecs.commonutils.PropertyUtils;
 
 public class FlagSearch extends AutomationBase
@@ -60,6 +66,29 @@ public class FlagSearch extends AutomationBase
 	public String getBuild()
 	{
 		return BUILD;
+	}
+	
+	public List<String> getSavedSearches()
+	{
+		Process process = null;
+		try
+		{
+			final String catCommand = "/bin/su " + (this.username == null ? "automation-user" : this.username) + " -c \"if [ -f ~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "  ]; then cat ~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "; fi; \"";
+			final String[] command = new String[]	{ "/bin/bash", "-c", catCommand };
+			process = Runtime.getRuntime().exec(command, ExecUtilities.getEnvironmentVars());
+			final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			this.success = ExecUtilities.runCommand(process, outputStream);
+			final String output = outputStream.toString();
+			return CollectionUtilities.toArrayList(output.split("\n"));
+		}
+		catch (final Exception ex)
+		{
+			return new ArrayList<String>();
+		}
+		finally
+		{
+			process.destroy();
+		}
 	}
 
 	public boolean run()

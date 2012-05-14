@@ -403,7 +403,7 @@ public abstract class AutomationBase
 			"&& chmod g+s ~" + (this.username == null ? "automation-user" : this.username) + " " +
 			 
 			/* Make the directory that will hold persistent automation portal files */
-			"&& mkdir ~/" + SAVE_HOME_FOLDER + "; " +
+			"&& mkdir ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "; " +
 
 			/* exit the if statement */
 			"fi && ";
