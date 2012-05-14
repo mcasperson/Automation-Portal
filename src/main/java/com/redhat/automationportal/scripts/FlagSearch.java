@@ -146,7 +146,7 @@ public class FlagSearch extends AutomationBase
 			"&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --product_name=\\\"" + this.productName + "\\\" --component=\\\"" + this.component + "\\\" " +
 								
 			// copy the save_searches.txt to the data folder
-			"&& cp \\\"" + this.getTmpDirectory(randomInt) + "/" + PERSIST_FILENAME + " ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/ "; 
+			"&& cp \\\"" + this.getTmpDirectory(randomInt) + "/" + PERSIST_FILENAME + "\\\" ~" + (this.username == null ? "automation-user" : this.username) + "/" + SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/ "; 
 
 			runScript(script, randomInt, true, true, true, null, environment);
 
