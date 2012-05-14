@@ -28,6 +28,8 @@ public abstract class AutomationBase
 {
 	protected static final String STANDARD_LOG_FILENAME = "AutomationInterface.log";
 	private static final String EMPTY_WAIT_TIME_SECONDS = "60";
+	/** The folder in a users home folder to spare when cleaning up files */
+	public static final String SAVE_HOME_FOLDER = ".AutomationPortal";
 	protected String message;
 	protected String output;
 	protected String password;
@@ -398,7 +400,10 @@ public abstract class AutomationBase
 			 * make the group sticky, preventing any new files created in this
 			 * directory from having the invalid user group by default
 			 */
-			"&& chmod g+s ~" + (this.username == null ? "automation-user" : this.username) + "; " +
+			"&& chmod g+s ~" + (this.username == null ? "automation-user" : this.username) + " " +
+			 
+			/* Make the directory that will hold persistent automation portal files */
+			"&& mkdir ~/" + SAVE_HOME_FOLDER + "; " +
 
 			/* exit the if statement */
 			"fi && ";
@@ -408,8 +413,10 @@ public abstract class AutomationBase
 			/* does the home directory exist? */
 			"&& if [ -d ~" + (this.username == null ? "automation-user" : this.username) + " ]; then " +
 					
-			/* clean it out */
-			"rm -rf ~" + (this.username == null ? "automation-user" : this.username) + "/*; " +
+			/* clean it out (With the exception of SAVE_HOME_FOLDER) */
+			"find . -type d \\( ! -iname \"" + SAVE_HOME_FOLDER + "\" ! -iname \"bar\" \\) -execdir rm -rfv {} +; " +
+			
+			//"rm -rf ~" + (this.username == null ? "automation-user" : this.username) + "/*; " +
 			
 			/* exit the statement */
 			"fi ";

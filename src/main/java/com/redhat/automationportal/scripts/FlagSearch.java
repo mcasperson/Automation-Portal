@@ -8,6 +8,8 @@ public class FlagSearch extends AutomationBase
 {
 	private static String BUILD = "20120514-1344";
 	private static final String TEMPLATE_DIR = "/opt/automation-interface/Flag_search";
+	private static final String SAVE_DATA_FOLDER = "FlagSearch";
+	private static final String PERSIST_FILENAME = "saved_searches.txt";
 	
 	private String bugzillaUsername;
 	private String bugzillaPassword;
@@ -89,12 +91,27 @@ public class FlagSearch extends AutomationBase
 			final String script =
 			// copy the template files
 			"cp -R \\\"" + TEMPLATE_DIR + "/\\\"* \\\"" + this.getTmpDirectory(randomInt) + "\\\" " +
+			
+			// If the saved file exists
+			"&& if [ -f ~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "  ]; then " +
+			
+			/* copy the saved file */
+			"cp \\\"~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "/" + PERSIST_FILENAME + "\\\" \\\"" + this.getTmpDirectory(randomInt) + "\\\";"  +
+			
+			/* exit the statement */
+			"fi " +
 
 			// enter the scripts directory
 			"&& cd \\\"" + this.getTmpDirectory(randomInt) + "\\\" " +
 
 			// run the python script
-			"&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --product_name=\\\"" + this.productName + "\\\" --component=\\\"" + this.component + "\\\"";
+			"&& perl flag_search7.pl --login=" + bugzillaUsername + " --password=${" + randomString + "} --product_name=\\\"" + this.productName + "\\\" --component=\\\"" + this.component + "\\\" " +
+			
+			// make sure the data folder exists */
+			"&& mkdir -p \\\"~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "\\\" " +
+			
+			// copy the save_searches.txt to the data folder
+			"&& copy \\\"" + this.getTmpDirectory(randomInt) + "/" + PERSIST_FILENAME + "\\\" \\\"~/" + AutomationBase.SAVE_HOME_FOLDER + "/" + SAVE_DATA_FOLDER + "\\\""; 
 
 			runScript(script, randomInt, true, true, true, null, environment);
 
