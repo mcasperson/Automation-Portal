@@ -445,14 +445,15 @@ public abstract class AutomationBase
 			/* remove anything in the home directory once the command is complete */
 			final String cleanHomeDirectory = 
 			/* does the home directory exist? */
-			"&& if [ -d ~" + (this.username == null ? "automation-user" : this.username) + " ]; then " +
+			" && if [ -d ~" + (this.username == null ? "automation-user" : this.username) + " ]; then " +
 					
 			"cd ~" + (this.username == null ? "automation-user" : this.username) + " " +
 					
-			/* clean it out (With the exception of SAVE_HOME_FOLDER) */
-			"&& find . -type d \\( ! -iname \"" + SAVE_HOME_FOLDER + "\" \\) -execdir rm -rfv {} +; " +
+			/* enable extended globs */
+			"&& shopt -s extglob " +
 			
-			//"rm -rf ~" + (this.username == null ? "automation-user" : this.username) + "/*; " +
+			/* delete all but our data folder */
+			"&& rm -rf !(" + SAVE_HOME_FOLDER + "); " +
 			
 			/* exit the statement */
 			"fi ";
